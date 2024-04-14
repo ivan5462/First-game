@@ -40,6 +40,8 @@ def draw_window(red, yellow, red_bullets, yellow_bullets):
     for bullet in yellow_bullets:
         pygame.draw.rect(WIN, YELLOW, bullet)
 
+    pygame.display.update()
+
 def yellow_handle_movement(keys_pressed, yellow):
     if keys_pressed[pygame.K_a] and yellow.x - VEL > 0: # left
         yellow.x -= VEL 
@@ -66,13 +68,17 @@ def handle_bullets(yellow_bullets, red_bullets, yellow, red):
         if red.colliderect(bullet):
             pygame.event.post(pygame.event.Event(RED_HIT))
             yellow_bullets.remove(bullet)
+        elif bullet.x >=  WIDTH:
+            yellow_bullets.remove(bullet)
+
 
     for bullet in red_bullets:
         bullet.x -= BULLET_VEL
         if yellow.colliderect(bullet):
             pygame.event.post(pygame.event.Event(YELLOW_HIT))
             red_bullets.remove(bullet)
-
+        elif bullet.x <= 0:
+            red_bullets.remove(bullet) 
 
 def main():
     red = pygame.Rect(700, 300, SPACESHIP_WIDTH, SPACESHIP_HEIGHT)
